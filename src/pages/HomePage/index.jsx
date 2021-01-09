@@ -1,10 +1,11 @@
 import React from 'react';
+import Page from '../Page';
 
 const HomePage = () => {
     return(
-        <React.Fragment>
+        <Page>
             Welcome to QA Tool
-        </React.Fragment>
+        </Page>
     );
 };
 
