@@ -4,7 +4,7 @@ import HomePage from 'Pages/HomePage';
 import Page from 'Pages/Page';
 
 describe('HomePage', () => {
-
+      
     it('renders without error', () => {
 		const wrapper = shallow(<HomePage />);
 		expect(wrapper.length).toEqual(1);
