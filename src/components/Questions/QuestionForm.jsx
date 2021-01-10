@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Form, Checkbox } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 import styled from 'styled-components';
 import _ from "lodash/fp";
 
@@ -19,7 +19,9 @@ const StyledP = styled.p`
 
 const QuestionForm = (props) => {
 
-    const { register, handleSubmit, errors, reset } = useForm();
+    const { register, handleSubmit, errors, reset } = useForm({
+        defaultValues: props.defaultValues
+    });
     
     const onSubmit = (data) => {
         props.onSubmit(data);
@@ -58,7 +60,10 @@ const QuestionForm = (props) => {
             )}
 
             <Form.Field>
-                <Checkbox label='Delay for 5 seconds' />
+                    <div>
+                   <input type="checkbox" name="delay" id="delay" ref={register} style={{ margin: '.4rem' }}/>
+                   <label htmlFor="delay" style={{ fonSize: '0.9rem'}}>Delay for 5 seconds</label>
+                   </div>
             </Form.Field>
 
             <StyledButton>{props.buttonContent}</StyledButton>

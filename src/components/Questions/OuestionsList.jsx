@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Header, Container, Icon, Accordion, Button, Segment } from 'semantic-ui-react';
+import { Header, Container, Icon, Accordion, Button, Segment, IconGroup } from 'semantic-ui-react';
 import styled from 'styled-components';
 import QuestionStore from 'Store/Questions';
 import ToolTip from '../ToolTip';
+
 
 const StyledDiv = styled.div`
     display: flex;
@@ -40,7 +41,13 @@ const QuestionList = () => {
 
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        // dispatch(QuestionStore.actions.getQuestionList());
+    },[]);
+
     const questionsList = useSelector(state => state.questions.questionsList);
+
+    // console.log(questionsList)
 
     const handleClick = (e, titleProps) => {
         const { index } = titleProps
@@ -56,8 +63,11 @@ const QuestionList = () => {
     const handleDelete = (id) => {
         dispatch(QuestionStore.actions.deleteSingleQuestion(id));
     }
-    
 
+    const handleEdit = (data) => {
+        dispatch(QuestionStore.actions.dataToEdit(data));
+    }
+    
     return(
         <Container>
             <StyledDiv>
@@ -73,8 +83,10 @@ const QuestionList = () => {
             {questionsList.length >= 1 ? (
                 <React.Fragment>
                     <StyledDiv>
+                        
                         <Accordion styled fluid>
                             {questionsList && questionsList.map((questionsList, i) => {
+                                // console.log(questionsList,"inside map")
                                 return <React.Fragment key={i}>
                                     <Accordion.Title
                                         active={activeIndex === i}
@@ -82,9 +94,9 @@ const QuestionList = () => {
                                         onClick={handleClick}
                                     >
                                         <Icon name='dropdown' />
-                                           {questionsList.question}
-                                           <StyledIcon name='edit outline' color="green"/>      
-                                           <StyledIcon name='trash alternate' color='red' onClick={() => handleDelete(questionsList.id)}/>
+                                        {questionsList.question}                                     
+                                        <StyledIcon name='edit outline' color="green" onClick={() => handleEdit(questionsList)}/>      
+                                        <StyledIcon name='trash alternate' color='red' onClick={() => handleDelete(questionsList.id)}/>
                                     </Accordion.Title>
                                     <Accordion.Content
                                         active={activeIndex === i}
@@ -93,9 +105,11 @@ const QuestionList = () => {
                                             {questionsList.answer}
                                         </p>
                                     </Accordion.Content>
+                                    
                                 </React.Fragment>
                             })}
                         </Accordion>
+                      
                     </StyledDiv>
                     <ButtonDiv>
                         <SortButton> Sort Questions </SortButton>

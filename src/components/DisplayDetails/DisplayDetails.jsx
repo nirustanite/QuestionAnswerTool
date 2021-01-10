@@ -5,7 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import QuestionList from '../Questions/OuestionsList';
 import NewQuestion from '../Questions/NewQuestion/NewQuestion';
+import EditQuestion from '../Questions/EditQuestion/EditQuestion';
 import QuestionStore from 'Store/Questions';
+
 
 const StyledContainer = styled(Container)`
     padding-top: 20px;
@@ -22,6 +24,7 @@ const DisplayDetails = () => {
     },[]);
 
     const questionsList = useSelector(state => state.questions.questionsList);
+    const editData = useSelector(state => state.questions.editData);
 
     return(
         <StyledContainer>
@@ -35,7 +38,7 @@ const DisplayDetails = () => {
                     </Grid.Column>
                     <Grid.Column>
                        <QuestionList />
-                       <NewQuestion />
+                       {editData.id ? <EditQuestion /> : <NewQuestion />}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
