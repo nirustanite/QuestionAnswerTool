@@ -18,7 +18,7 @@ const StyledMenu = styled(Menu)`
         }    
 
         &.active {
-            box-shadow: 0px -2px 0px 0px #66CD00 inset !important;
+            box-shadow: 0px -2px 0px 0px #28B463 inset !important;
             background: none !important;
         }
     }   
@@ -35,7 +35,7 @@ const Nav = () => {
         <StyledMenu fixed="top" stackable>
             <Container>
                 <Menu.Item>
-                    QA Tool
+                    Q/A Tool
                 </Menu.Item>
                 <Menu.Item 
                     as={Link}
