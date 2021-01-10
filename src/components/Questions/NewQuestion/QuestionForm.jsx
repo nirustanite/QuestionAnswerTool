@@ -8,7 +8,7 @@ const StyledButton = styled(Button)`
     color: white !important;
 `;
 
-const QuestionForm = () => {
+const QuestionForm = (props) => {
 
     const { register, handleSubmit } = useForm();
     
@@ -27,7 +27,7 @@ const QuestionForm = () => {
             <Form.Field>
                 <Checkbox label='Delay for 5 seconds' />
             </Form.Field>
-            <StyledButton>Create Question</StyledButton>
+            <StyledButton>{props.buttonContent}</StyledButton>
         </Form>
     );
 };
