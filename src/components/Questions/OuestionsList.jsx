@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Header, Container, Icon, Accordion, Button, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import QuestionStore from 'Store/Questions';
 import ToolTip from '../ToolTip';
-import { actions } from '../../redux/Questions/ducks';
 
 const StyledDiv = styled.div`
     display: flex;
@@ -41,17 +40,12 @@ const QuestionList = () => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(QuestionStore.actions.getQuestionList());
-    },[]);
-
     const questionsList = useSelector(state => state.questions.questionsList);
 
     const handleClick = (e, titleProps) => {
         const { index } = titleProps
         const newIndex = activeIndex === index ? -1 : index
         setActiveIndex(newIndex);
-        console.log(newIndex);
     }
 
     const handleRemoveAll = (e) => {
@@ -60,9 +54,7 @@ const QuestionList = () => {
     }
 
     const handleDelete = (id) => {
-        console.log('inside', activeIndex);
-        setActiveIndex(-1);
-        dispatch(QuestionStore.actions. deleteSingleQuestion(id));
+        dispatch(QuestionStore.actions.deleteSingleQuestion(id));
     }
     
 

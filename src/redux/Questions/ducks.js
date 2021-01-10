@@ -19,7 +19,7 @@ export const actions = {
         id
     }),
     createQuestion: (data) => ({
-        type: type.CREATE_QUESTION,
+        type: types.CREATE_QUESTION,
         data
     })
 
@@ -43,6 +43,11 @@ export default function reducer(state=initialState, action){
             return{
                 ...state,
                 questionsList: state.questionsList.filter(el =>  action.id !== el.id)
+            }
+        case types.CREATE_QUESTION:
+            return{
+                ...state,
+                questionsList: [...state.questionsList, action.data]
             }
         default:
             return state;

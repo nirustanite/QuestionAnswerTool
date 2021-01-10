@@ -1,8 +1,11 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Container, Header } from 'semantic-ui-react';
 import styled from 'styled-components';
 import QuestionForm from './QuestionForm';
-import ToolTip from 'Components/ToolTip'
+import ToolTip from 'Components/ToolTip';
+import {v4 as uuid_v4} from 'uuid';
+import QuestionStore from 'Store/Questions';
 
 const StyledContainer = styled(Container)`
     padding-top: 30px;
@@ -14,6 +17,14 @@ const StyledDiv = styled.div`
 `;
 
 const NewQuestion = () => {
+
+    const dispatch = useDispatch();
+
+    const onSubmit = (data) => {
+        data.id=uuid_v4();
+        dispatch(QuestionStore.actions.createQuestion(data));
+    }
+
     return(
         <StyledContainer>
             <StyledDiv>
@@ -25,7 +36,7 @@ const NewQuestion = () => {
                     position='right center'
                 />
             </StyledDiv>
-            <QuestionForm buttonContent='Create Question'/>
+            <QuestionForm buttonContent='Create Question' onSubmit={onSubmit}/>
         </StyledContainer>
     );
 };
