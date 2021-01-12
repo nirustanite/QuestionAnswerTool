@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Form } from 'semantic-ui-react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import _ from "lodash/fp";
 
@@ -19,13 +20,23 @@ const StyledP = styled.p`
 
 const QuestionForm = (props) => {
 
+    const loading = useSelector(state => state.questions.loading);
+
     const { register, handleSubmit, errors, reset } = useForm({
         defaultValues: props.defaultValues
     });
+
     
     const onSubmit = (data) => {
         props.onSubmit(data);
-        reset({});
+        if(data.delay){
+            setTimeout(()=> {
+                reset({})
+            }, 5000)
+        }
+        else{
+            reset({})
+        }
     }
 
     return(
@@ -66,7 +77,7 @@ const QuestionForm = (props) => {
                    </div>
             </Form.Field>
 
-            <StyledButton>{props.buttonContent}</StyledButton>
+            {loading ? (<StyledButton loading>{props.buttonContent}</StyledButton>) : (<StyledButton>{props.buttonContent}</StyledButton>) }
         </Form>
     );
 };

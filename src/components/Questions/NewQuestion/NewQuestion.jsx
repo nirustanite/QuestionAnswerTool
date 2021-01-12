@@ -21,10 +21,14 @@ const NewQuestion = () => {
     const dispatch = useDispatch();
 
     const onSubmit = (data) => {
-        console.log(data);
         data.id=uuid_v4();
-        dispatch(QuestionStore.actions.createQuestion(data));
-    }
+        if(data.delay){
+            dispatch(QuestionStore.actions.saveNewQuestionDelay(data));
+        }
+        else{
+            dispatch(QuestionStore.actions.createQuestion(data));
+        }
+    };
 
     return(
         <StyledContainer>
