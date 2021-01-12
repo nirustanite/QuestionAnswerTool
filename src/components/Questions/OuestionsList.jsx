@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Header, Container, Icon, Accordion, Button, Segment } from 'semantic-ui-react';
+import { Header, Container, Icon, Accordion, Button, Segment, Confirm } from 'semantic-ui-react';
 import styled from 'styled-components';
 import QuestionStore from 'Store/Questions';
 import ToolTip from '../ToolTip';
-import { actions } from '../../redux/Questions/ducks';
+
 
 const StyledDiv = styled.div`
     display: flex;
@@ -21,10 +21,6 @@ const ButtonDiv = styled.div`
     }
 `;
 
-const StyledIcon = styled(Icon)`
-    padding-left: 20px;
-`;
-
 const SortButton = styled(Button)`
     background-color: #5499C7 !important;
     color: white !important;
@@ -39,33 +35,41 @@ const QuestionList = () => {
 
     const [activeIndex, setActiveIndex] = useState(-1);
 
+    const [open, setOpen] = useState(false);
+
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(QuestionStore.actions.getQuestionList());
-    },[]);
-
     const questionsList = useSelector(state => state.questions.questionsList);
+    const editData = useSelector(state => state.questions.editData);
 
     const handleClick = (e, titleProps) => {
         const { index } = titleProps
         const newIndex = activeIndex === index ? -1 : index
         setActiveIndex(newIndex);
-        console.log(newIndex);
     }
 
     const handleRemoveAll = (e) => {
         e.preventDefault();
+        setOpen(true);
+    }
+
+    const handleConfirm = () => {
+        setOpen(false);
         dispatch(QuestionStore.actions.removeAllQuestions());
     }
 
+    const handleCancel = () => {
+        setOpen(false);
+    }
+
     const handleDelete = (id) => {
-        console.log('inside', activeIndex);
-        setActiveIndex(-1);
-        dispatch(QuestionStore.actions. deleteSingleQuestion(id));
+        dispatch(QuestionStore.actions.deleteSingleQuestion(id));
+    }
+
+    const handleEdit = (data) => {
+        dispatch(QuestionStore.actions.dataToEdit(data));
     }
     
-
     return(
         <Container>
             <StyledDiv>
@@ -82,7 +86,7 @@ const QuestionList = () => {
                 <React.Fragment>
                     <StyledDiv>
                         <Accordion styled fluid>
-                            {questionsList && questionsList.map((questionsList, i) => {
+                            {questionsList && questionsList.map((question, i) => {
                                 return <React.Fragment key={i}>
                                     <Accordion.Title
                                         active={activeIndex === i}
@@ -90,15 +94,24 @@ const QuestionList = () => {
                                         onClick={handleClick}
                                     >
                                         <Icon name='dropdown' />
-                                           {questionsList.question}
-                                           <StyledIcon name='edit outline' color="green"/>      
-                                           <StyledIcon name='trash alternate' color='red' onClick={() => handleDelete(questionsList.id)}/>
+                                        {question.question}  
+                                        <Button 
+                                            icon='edit outline' 
+                                            color="green" 
+                                            onClick={() => handleEdit(question)}
+                                        />      
+                                        <Button 
+                                            icon='trash alternate' 
+                                            disabled={editData.id ? true : false} 
+                                            color='red' 
+                                            onClick={() => handleDelete(question.id)}
+                                        />
                                     </Accordion.Title>
                                     <Accordion.Content
                                         active={activeIndex === i}
                                     >
                                         <p>
-                                            {questionsList.answer}
+                                            {question.answer}
                                         </p>
                                     </Accordion.Content>
                                 </React.Fragment>
@@ -106,8 +119,19 @@ const QuestionList = () => {
                         </Accordion>
                     </StyledDiv>
                     <ButtonDiv>
-                        <SortButton> Sort Questions </SortButton>
-                        <RemoveButton onClick={handleRemoveAll}> Remove All Questions </RemoveButton>
+                        <SortButton icon="sort alphabet down"/>
+                        <SortButton icon="sort alphabet up"/>
+                
+                        <RemoveButton 
+                            onClick={handleRemoveAll}
+                            disabled={editData.id ? true : false}
+                        > Remove All Questions </RemoveButton>
+                        <Confirm 
+                            open={open}
+                            onCancel={handleCancel}
+                            onConfirm={handleConfirm}
+                            size='mini'
+                        />
                     </ButtonDiv>
                 </React.Fragment>
             ) : (

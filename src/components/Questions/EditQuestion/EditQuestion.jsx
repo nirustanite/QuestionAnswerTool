@@ -1,10 +1,9 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Header } from 'semantic-ui-react';
 import styled from 'styled-components';
 import QuestionForm from '../QuestionForm';
 import ToolTip from 'Components/ToolTip';
-import {v4 as uuid_v4} from 'uuid';
 import QuestionStore from 'Store/Questions';
 
 const StyledContainer = styled(Container)`
@@ -16,24 +15,27 @@ const StyledDiv = styled.div`
     flex-direction: row;
 `;
 
-const NewQuestion = () => {
+const EditQuestion = () => {
+
+    const editData = useSelector(state =>  state.questions.editData);
 
     const dispatch = useDispatch();
 
     const onSubmit = (data) => {
-        data.id=uuid_v4();
+        data.id = editData.id
         if(data.delay){
-            dispatch(QuestionStore.actions.saveNewQuestionDelay(data));
+            dispatch(QuestionStore.actions.saveEditQuestionDelay(data));
+        }else{
+            dispatch(QuestionStore.actions.saveEditQuestions(data));
+            dispatch(QuestionStore.actions.dataToEdit({}));
         }
-        else{
-            dispatch(QuestionStore.actions.createQuestion(data));
-        }
-    };
+       
+    }
 
     return(
         <StyledContainer>
             <StyledDiv>
-                <Header as="h3">Create a new question</Header>
+                <Header as="h3">Edit question</Header>
                 <ToolTip
                     name='info circle'
                     color='blue'
@@ -41,9 +43,9 @@ const NewQuestion = () => {
                     position='right center'
                 />
             </StyledDiv>
-            <QuestionForm buttonContent='Create Question' onSubmit={onSubmit}/>
+            <QuestionForm buttonContent='Save Question' onSubmit={onSubmit} defaultValues={editData}/>
         </StyledContainer>
     );
 };
 
-export default NewQuestion;
+export default EditQuestion;
