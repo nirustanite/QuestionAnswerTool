@@ -18,6 +18,8 @@ const StyledP = styled.p`
     }    
 `;
 
+
+// a form for question and answer with validation
 const QuestionForm = (props) => {
 
     const loading = useSelector(state => state.questions.loading);
@@ -72,12 +74,22 @@ const QuestionForm = (props) => {
 
             <Form.Field>
                     <div>
-                   <input type="checkbox" name="delay" id="delay" ref={register} style={{ margin: '.4rem' }}/>
-                   <label htmlFor="delay" style={{ fonSize: '0.9rem'}}>Delay for 5 seconds</label>
+                        <input type="checkbox" name="delay" id="delay" ref={register} style={{ margin: '.4rem' }}/>
+                        <label htmlFor="delay" style={{ fonSize: '0.9rem'}}>Delay for 5 seconds</label>
                    </div>
             </Form.Field>
 
-            {loading ? (<StyledButton loading>{props.buttonContent}</StyledButton>) : (<StyledButton>{props.buttonContent}</StyledButton>) }
+            {loading ? (
+                <StyledButton 
+                    loading 
+                    disabled={loading}
+                >
+                    {props.buttonContent}
+                </StyledButton>
+            ) : (
+                <StyledButton>
+                    {props.buttonContent}
+                </StyledButton>) }
         </Form>
     );
 };

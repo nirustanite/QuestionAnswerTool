@@ -39,11 +39,15 @@ const EditQuestion = () => {
                 <ToolTip
                     name='info circle'
                     color='blue'
-                    content='Here you can create new questions and answers'
+                    content='Here you can edit question and answer'
                     position='right center'
                 />
             </StyledDiv>
-            <QuestionForm buttonContent='Save Question' onSubmit={onSubmit} defaultValues={editData}/>
+            <QuestionForm 
+                buttonContent='Save Question' 
+                onSubmit={onSubmit} 
+                defaultValues={editData}
+            />
         </StyledContainer>
     );
 };
