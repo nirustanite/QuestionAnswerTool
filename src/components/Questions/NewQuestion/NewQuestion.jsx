@@ -41,7 +41,10 @@ const NewQuestion = () => {
                     position='right center'
                 />
             </StyledDiv>
-            <QuestionForm buttonContent='Create Question' onSubmit={onSubmit}/>
+            <QuestionForm 
+                buttonContent='Create Question' 
+                onSubmit={onSubmit}
+            />
         </StyledContainer>
     );
 };
