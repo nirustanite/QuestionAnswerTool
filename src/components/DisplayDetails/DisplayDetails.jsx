@@ -14,8 +14,8 @@ const StyledContainer = styled(Container)`
     padding-left: 10%;
 `;
 
+
 const DisplayDetails = () => {
-    const count = 2;
 
     const dispatch = useDispatch();
 
