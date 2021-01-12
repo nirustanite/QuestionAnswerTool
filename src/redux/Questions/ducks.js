@@ -1,6 +1,8 @@
 import data from 'Util/data';
-import { takeEvery, call, put, delay } from "redux-saga/effects";
+import { takeEvery, put, delay } from "redux-saga/effects";
+import compare from 'Util/compare';
 
+//action types
 export const types = {
     QUESTION_LIST_REQUESTED: 'QUESTION_LIST_REQUESTED',
     REMOVE_ALL_QUESTIONS: 'REMOVE_ALL_QUESTIONS',
@@ -9,9 +11,12 @@ export const types = {
     DATA_TO_EDIT: 'DATA_TO_EDIT',
     SAVE_EDIT_QUESTION: 'SAVE_EDIT_QUESTION',
     SAVE_NEW_QUESTION_DELAY: 'SAVE_NEW_QUESTION_DELAY',
-    SAVE_EDIT_QUESTION_DELAY: ' SAVE_EDIT_QUESTION_DELAY' 
+    SAVE_EDIT_QUESTION_DELAY: ' SAVE_EDIT_QUESTION_DELAY',
+    SORT_QUESTION_REQUESTED: 'SORT_QUESTION_REQUESTED',
+    SORT_QUESTION_SUCCEEDED: 'SORT_QUESTION_SUCCEEDED'
 };
 
+// actions for questions
 export const actions = {
     getQuestionList : () => ({
         type: types.QUESTION_LIST_REQUESTED,
@@ -42,6 +47,11 @@ export const actions = {
     saveEditQuestionDelay: (data) => ({
         type: types.SAVE_EDIT_QUESTION_DELAY,
         data
+    }),
+    sortQuestions: (data, direction) => ({
+        type: types.SORT_QUESTION_REQUESTED,
+        data,
+        direction
     })
 };
 
@@ -101,6 +111,11 @@ export default function reducer(state=initialState, action){
                 ...state,
                 loading: true
             }
+        case types.SORT_QUESTION_SUCCEEDED: 
+            return{
+                ...state,
+                questionsList: [...action.sortedData]
+            }
         default:
             return state;
     }
@@ -110,9 +125,10 @@ export default function reducer(state=initialState, action){
 export function* saga(){
     yield takeEvery(types.SAVE_NEW_QUESTION_DELAY, saveNewQuestion);
     yield takeEvery(types.SAVE_EDIT_QUESTION_DELAY, saveEditQuestion);
+    yield takeEvery(types.SORT_QUESTION_REQUESTED, sortByQuestions);
 };
  
-
+// saga for delay 5 seconds for create new questions
 export function* saveNewQuestion({ data }){
     try{
         yield delay(5000);
@@ -123,6 +139,7 @@ export function* saveNewQuestion({ data }){
     } 
 };
 
+// saga for delay 5 seconds for edit question
 export function* saveEditQuestion({ data }){
     try{
         yield delay(5000);
@@ -134,4 +151,27 @@ export function* saveEditQuestion({ data }){
     } 
 };
 
+// saga for sort question
+export function* sortByQuestions({ data, direction }){
+    try{
+        if(direction === 'asc'){
+            const sortedData = data.sort(compare)
+            yield put({
+                type: types.SORT_QUESTION_SUCCEEDED,
+                sortedData
+            });
+        }
+        if(direction === 'desc'){
+            const sortedData = data.sort(compare).reverse();
+            yield put({
+                type: types.SORT_QUESTION_SUCCEEDED,
+                sortedData
+            });
+        }
+       
+    }
+    catch(error){
+       console.error(error)
+    } 
+};
 

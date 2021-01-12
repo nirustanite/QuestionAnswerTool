@@ -21,6 +21,10 @@ const ButtonDiv = styled.div`
     }
 `;
 
+const StyledIcon = styled(Icon)`
+   float: right;
+`;
+
 const SortButton = styled(Button)`
     background-color: #5499C7 !important;
     color: white !important;
@@ -29,45 +33,66 @@ const SortButton = styled(Button)`
 const RemoveButton = styled(Button)`
     background-color: #E74C3C !important;
     color: white !important;
+    margin-left: 10px !important;
 `;
 
+// list of questions with all the events 
 const QuestionList = () => {
 
     const [activeIndex, setActiveIndex] = useState(-1);
 
     const [open, setOpen] = useState(false);
 
+    const [direction, setDirection]  = useState('asc');
+
     const dispatch = useDispatch();
 
     const questionsList = useSelector(state => state.questions.questionsList);
     const editData = useSelector(state => state.questions.editData);
 
+    // handle click of accordion for questions to maintain the active state
     const handleClick = (e, titleProps) => {
         const { index } = titleProps
         const newIndex = activeIndex === index ? -1 : index
         setActiveIndex(newIndex);
     }
 
+    // event for removing all questions
     const handleRemoveAll = (e) => {
         e.preventDefault();
         setOpen(true);
     }
 
+    // event for handle confirm dialog box
     const handleConfirm = () => {
         setOpen(false);
         dispatch(QuestionStore.actions.removeAllQuestions());
     }
 
+    // event for cancelling the remove functionality
     const handleCancel = () => {
         setOpen(false);
     }
 
+    // event for deleting a single question
     const handleDelete = (id) => {
         dispatch(QuestionStore.actions.deleteSingleQuestion(id));
     }
 
+    // event for editing the question
     const handleEdit = (data) => {
         dispatch(QuestionStore.actions.dataToEdit(data));
+    }
+
+    // event for sorting the question
+    const handleSort = (data, direction) => {
+        if(direction === 'asc') {
+            setDirection('desc');
+        }
+        if(direction === 'desc'){
+            setDirection('asc');
+        }
+        dispatch(QuestionStore.actions.sortQuestions(data, direction));
     }
     
     return(
@@ -95,13 +120,13 @@ const QuestionList = () => {
                                     >
                                         <Icon name='dropdown' />
                                         {question.question}  
-                                        <Button 
-                                            icon='edit outline' 
+                                        <StyledIcon
+                                            name='edit outline' 
                                             color="green" 
                                             onClick={() => handleEdit(question)}
                                         />      
-                                        <Button 
-                                            icon='trash alternate' 
+                                        <StyledIcon 
+                                            name='trash alternate' 
                                             disabled={editData.id ? true : false} 
                                             color='red' 
                                             onClick={() => handleDelete(question.id)}
@@ -119,18 +144,24 @@ const QuestionList = () => {
                         </Accordion>
                     </StyledDiv>
                     <ButtonDiv>
-                        <SortButton icon="sort alphabet down"/>
-                        <SortButton icon="sort alphabet up"/>
-                
+                        <SortButton 
+                            onClick={() =>  handleSort(questionsList, direction)} 
+                        >
+                            Sort Questions &nbsp; <Icon 
+                                name={direction === 'asc' ? "sort alphabet ascending" : "sort alphabet descending"}
+                                size = 'large'
+                            />
+                        </SortButton>
                         <RemoveButton 
                             onClick={handleRemoveAll}
                             disabled={editData.id ? true : false}
-                        > Remove All Questions </RemoveButton>
+                        > Remove Questions </RemoveButton>
                         <Confirm 
                             open={open}
                             onCancel={handleCancel}
                             onConfirm={handleConfirm}
                             size='mini'
+                            content='Are you sure to remove all questions?'
                         />
                     </ButtonDiv>
                 </React.Fragment>
