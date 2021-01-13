@@ -7,6 +7,7 @@
     6. The application allows ot create a new question.
     7. A delay of 5 seconds can also be added when creating/editing a question.
     8. The redux structure is a representation of ducks pattern.
+    9. Used styled components for styling
 
 ### Technologies Used
    1. React Hooks
@@ -14,6 +15,7 @@
    3. Redux Saga
    4. React hook forms
    5. Semantic UI React
+   6. Styled Components
    7. Webpack
 
 ### Table of Contents
