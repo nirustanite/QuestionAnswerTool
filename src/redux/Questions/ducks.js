@@ -90,13 +90,11 @@ export default function reducer(state=initialState, action){
             }
         case types.SAVE_EDIT_QUESTION:
             const index = state.questionsList.findIndex(el => el.id === action.data.id);
-            console.log(index);
             state.questionsList[index] = {
                 id: action.data.id,
                 question: action.data.question,
                 answer: action.data.answer
             }
-           
             return {
                 ...state,
                 loading: false
