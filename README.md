@@ -41,7 +41,7 @@
 
 - Give the following command in the command line.
 
-       `npm i`
+    `npm i`
  
 <a name="run"></a>
  #### Run the project on localhost
