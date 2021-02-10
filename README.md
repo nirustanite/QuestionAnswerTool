@@ -6,8 +6,9 @@
     5. The application allows to sort the questions alphabetically and remove all the questions.
     6. The application allows ot create a new question.
     7. A delay of 5 seconds can also be added when creating/editing a question.
-    8. The redux structure is a representation of ducks pattern.
-    9. Used styled components for styling
+    8. When hovering on the info icon , the description is displayed.
+    9. The redux structure is a representation of ducks pattern.
+    10. Used styled components for styling
 
 ### Technologies Used
    1. React Hooks
