@@ -74,8 +74,8 @@ const QuestionList = () => {
         setOpen(false);
     }
 
-    // event for deleting a single question
-    const handleDelete = (id) => {
+     // event for deleting a single question
+     const handleDelete = (id) => {
         dispatch(QuestionStore.actions.deleteSingleQuestion(id));
     }
 
@@ -84,8 +84,10 @@ const QuestionList = () => {
         dispatch(QuestionStore.actions.dataToEdit(data));
     }
 
+
     // event for sorting the question
     const handleSort = (data, direction) => {
+        setActiveIndex(-1)
         if(direction === 'asc') {
             setDirection('desc');
         }
@@ -94,7 +96,7 @@ const QuestionList = () => {
         }
         dispatch(QuestionStore.actions.sortQuestions(data, direction));
     }
-    
+
     return(
         <Container>
             <StyledDiv>
@@ -112,7 +114,7 @@ const QuestionList = () => {
                     <StyledDiv>
                         <Accordion styled fluid>
                             {questionsList && questionsList.map((question, i) => {
-                                return <React.Fragment key={i}>
+                                return <React.Fragment key={question.id}>
                                     <Accordion.Title
                                         active={activeIndex === i}
                                         index={i}
@@ -139,6 +141,7 @@ const QuestionList = () => {
                                             {question.answer}
                                         </p>
                                     </Accordion.Content>
+
                                 </React.Fragment>
                             })}
                         </Accordion>

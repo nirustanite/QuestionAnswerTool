@@ -3,7 +3,7 @@ import { Grid, Container } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
-import QuestionList from '../Questions/OuestionsList';
+import QuestionList from '../Questions/QuestionsList';
 import NewQuestion from '../Questions/NewQuestion/NewQuestion';
 import EditQuestion from '../Questions/EditQuestion/EditQuestion';
 import QuestionStore from 'Store/Questions';

@@ -24,7 +24,7 @@ const QuestionForm = (props) => {
 
     const loading = useSelector(state => state.questions.loading);
 
-    const { register, handleSubmit, errors, reset } = useForm({
+    const { register, handleSubmit, errors, reset, validate } = useForm({
         defaultValues: props.defaultValues
     });
 
@@ -41,15 +41,20 @@ const QuestionForm = (props) => {
         }
     }
 
+    const validation = (question) => {
+        return question.trim().length >= 1 ? true : false
+    }
+
     return(
         <Form onSubmit={handleSubmit(onSubmit)}>
 
             <Form.Field>
-                <label>Question</label>
+                <label htmlFor="question">Question</label>
                 <input 
+                    id="question"
                     name="question" 
                     placeholder='Enter a question' 
-                    ref={register({ required: true })}
+                    ref={register({ required: true , validate: validation})}
                 />
             </Form.Field>
 
@@ -57,9 +62,14 @@ const QuestionForm = (props) => {
                 <StyledP>This field is required</StyledP>
             )}
 
+            {_.get("question.type", errors) === "validate" && (
+                <StyledP>Enter a string</StyledP>
+            )}  
+
             <Form.Field>
-                <label>Answer</label>
-                <textarea 
+                <label htmlFor="answer">Answer</label>
+                <textarea
+                    id="answer" 
                     name="answer"  
                     rows="4" 
                     cols="50" 

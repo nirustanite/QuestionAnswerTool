@@ -19,6 +19,8 @@ const EditQuestion = () => {
 
     const editData = useSelector(state =>  state.questions.editData);
 
+    console.log(editData, "inside Edit Question")
+
     const dispatch = useDispatch();
 
     const onSubmit = (data) => {
@@ -47,6 +49,7 @@ const EditQuestion = () => {
                 buttonContent='Save Question' 
                 onSubmit={onSubmit} 
                 defaultValues={editData}
+                key={editData.id}
             />
         </StyledContainer>
     );
